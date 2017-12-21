@@ -3,8 +3,8 @@ import time
 
 cid = p.connect(p.SHARED_MEMORY)
 if (cid<0):
-	p.connect(p.GUI)
-	
+    p.connect(p.GUI)
+
 p.resetSimulation()
 p.setGravity(0,0,-10)
 useRealTimeSim = 1
@@ -17,10 +17,10 @@ p.loadURDF("plane.urdf")
 
 car = p.loadURDF("racecar/racecar_differential.urdf") #, [0,0,2],useFixedBase=True)
 for i in range (p.getNumJoints(car)):
-	print (p.getJointInfo(car,i))
+    print (p.getJointInfo(car,i))
 for wheel in range(p.getNumJoints(car)):
-		p.setJointMotorControl2(car,wheel,p.VELOCITY_CONTROL,targetVelocity=0,force=0)
-		p.getJointInfo(car,wheel)	
+        p.setJointMotorControl2(car,wheel,p.VELOCITY_CONTROL,targetVelocity=0,force=0)
+        p.getJointInfo(car,wheel)
 
 wheels = [8,15]
 print("----------------")
@@ -57,18 +57,18 @@ targetVelocitySlider = p.addUserDebugParameter("wheelVelocity",-50,50,0)
 maxForceSlider = p.addUserDebugParameter("maxForce",0,50,20)
 steeringSlider = p.addUserDebugParameter("steering",-1,1,0)
 while (True):
-	maxForce = p.readUserDebugParameter(maxForceSlider)
-	targetVelocity = p.readUserDebugParameter(targetVelocitySlider)
-	steeringAngle = p.readUserDebugParameter(steeringSlider)
-	#print(targetVelocity)
-	
-	for wheel in wheels:
-		p.setJointMotorControl2(car,wheel,p.VELOCITY_CONTROL,targetVelocity=targetVelocity,force=maxForce)
-		
-	for steer in steering:
-		p.setJointMotorControl2(car,steer,p.POSITION_CONTROL,targetPosition=-steeringAngle)
-		
-	steering
-	if (useRealTimeSim==0):
-		p.stepSimulation()
-	time.sleep(0.01)
+    maxForce = p.readUserDebugParameter(maxForceSlider)
+    targetVelocity = p.readUserDebugParameter(targetVelocitySlider)
+    steeringAngle = p.readUserDebugParameter(steeringSlider)
+    #print(targetVelocity)
+
+    for wheel in wheels:
+        p.setJointMotorControl2(car,wheel,p.VELOCITY_CONTROL,targetVelocity=targetVelocity,force=maxForce)
+
+    for steer in steering:
+        p.setJointMotorControl2(car,steer,p.POSITION_CONTROL,targetPosition=-steeringAngle)
+
+    steering
+    if (useRealTimeSim==0):
+        p.stepSimulation()
+    time.sleep(0.01)

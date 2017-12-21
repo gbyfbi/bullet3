@@ -58,26 +58,32 @@ print(recordNum)
 print('item num:'),
 print(itemNum)
 
+
 def Step(stepIndex):
-	for objectId in range(objectNum):
-		record = log[stepIndex*objectNum+objectId]
-		Id = record[2]
-		pos = [record[3],record[4],record[5]]
-		orn = [record[6],record[7],record[8],record[9]]
-		p.resetBasePositionAndOrientation(Id,pos,orn)
-		numJoints = p.getNumJoints(Id)
-		for i in range (numJoints):
-			jointInfo = p.getJointInfo(Id,i)
-			qIndex = jointInfo[3]
-			if qIndex > -1:
-				p.resetJointState(Id,i,record[qIndex-7+17])
+    for objectId in range(objectNum):
+        record = log[stepIndex*objectNum+objectId]
+        Id = record[2]
+        pos = [record[3],record[4],record[5]]
+        orn = [record[6],record[7],record[8],record[9]]
+        p.resetBasePositionAndOrientation(Id,pos,orn)
+        numJoints = p.getNumJoints(Id)
+        for i in range (numJoints):
+            jointInfo = p.getJointInfo(Id,i)
+            qIndex = jointInfo[3]
+            if qIndex > -1:
+                p.resetJointState(Id,i,record[qIndex-7+17])
 
 
 stepIndexId = p.addUserDebugParameter("stepIndex",0,recordNum/objectNum-1,0)
 
+import time as sys_time
+stepIndex = 0
 while True:
-	stepIndex = int(p.readUserDebugParameter(stepIndexId))
-	Step(stepIndex)
-	p.stepSimulation()
-	Step(stepIndex)
+    # stepIndex = int(p.readUserDebugParameter(stepIndexId))
+    Step(stepIndex)
+    p.stepSimulation()
+    Step(stepIndex)
+    stepIndex += 1
+    sys_time.sleep(0.0051)
+    # print(stepIndex)
 
